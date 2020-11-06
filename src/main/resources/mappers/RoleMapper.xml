@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsxt.crm.dao.RoleDao">
+    <select id="selectList" parameterType="roleName" resultType="RoleName">
+        select t.*
+        from  r_role t
+        <where>
+            <if test="roleName!=null and ''!=roleName">
+                and r.role_name like '%${roleName}%'
+            </if>
+            <if test="roleRemark!=null and ''!=roleRemark">
+                and r.role_remark = #{roleRemark}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="RoleName">
+            insert into r_role
+               (id,
+                role_name)
+            values
+                (#{id},
+                #{roleName})
+    </insert>
+    <select id="selectRoleInfoById" parameterType="String" resultType="RoleName">
+        select t.*
+        from  r_role t
+        where t.id = #{id}
+    </select>
+    <update id="updateRole" parameterType="RoleNameVo">
+        update
+            r_role
+        set
+            role_name = #{roleName}
+        where
+            id = #{id}
+    </update>
+    <delete id="deleteIds" parameterType="String">
+        delete from r_role
+        where id in
+        <foreach collection="array" open="(" close=")" item="i" separator=",">
+            #{i}
+        </foreach>
+    </delete>
+</mapper>
